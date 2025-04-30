@@ -1,0 +1,44 @@
+{% include 'parts/head.html' %}
+{% include 'parts/nav.html' %}
+
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-8 col-md-6">
+            <div class="card shadow p-4 mt-5">
+                <div class="card-body">
+                    <h3 class="text-center text-dark mb-4">Login or Sign Up</h3>
+                    <form class="form" onsubmit="return false;">
+                        <!-- Email Field -->
+                        <div class="form-group mb-3">
+                            <label for="email" class="form-label text-dark">Email:</label>
+                            <input type="email" name="email" id="email" class="form-control" required>
+                        </div>
+                        <!-- Password Field -->
+                        <div class="form-group mb-3">
+                            <label for="password" class="form-label text-dark">Password:</label>
+                            <input type="password" name="password" id="password" class="form-control" required>
+                        </div>
+                        <!-- Login and Sign Up Buttons -->
+                        <div class="d-grid gap-2 mt-4">
+                            <button id="sign-up" class="btn btn-secondary">Sign Up</button>
+                            <button id="login" class="btn btn-primary">Login</button>
+                        </div>
+                        <!-- Register Link -->
+                        <div class="text-center mt-3">
+                            <a href="/register" class="text-dark small">Already have an account? Register here</a>
+                        </div>
+                    </form>
+
+                    <!-- Sign Out Button -->
+                    <div class="d-grid mt-4">
+                        <button id="sign-out" class="btn btn-danger" hidden>Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'parts/foot.html' %}
+</body>

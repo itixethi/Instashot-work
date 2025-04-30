@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'parts/head.html' %}
+{% include 'parts/nav.html' %}
+<body>
+
+<div class="container py-4">
+    <div class="row">
+
+        <!-- Sidebar -->
+        <div class="col-3">
+            <div class="card overflow-hidden">
+                <div class="card-body pt-3">
+                    <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
+                        <li class="nav-item"><a class="nav-link text-dark" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Explore</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Feed</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Terms</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Support</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Feed -->
+        <div class="col-6">
+            {% if isAuthorized %}
+            <h4>Share a New Post</h4>
+            <div class="row mb-4">
+                <form method="POST" action="/upload-post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <textarea class="form-control" name="caption" placeholder="Write a caption..." rows="3" required></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <input class="form-control" type="file" name="file" accept="image/*" required>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-dark">Upload</button>
+                    </div>
+                </form>
+            </div>
+            <hr>
+            {% endif %}
+
+            <!-- Instagram-Style Grid of Posts -->
+            <div class="row row-cols-2 row-cols-md-3 g-3">
+                {% for post in posts %}
+                <div class="col">
+                    <div class="card border-0 shadow-sm">
+                        <a href="/profile/{{ post.Username }}">
+                            <img src="{{ post.ImageURL }}" class="card-img-top" alt="Post by {{ post.Username }}">
+                        </a>
+                        <div class="card-body p-2">
+                            <p class="mb-0 fw-semibold small">@{{ post.Username }}</p>
+                            <p class="text-muted small">{{ post.Caption }}</p>
+                            <p class="text-muted small mb-0">
+                                <i class="fas fa-clock"></i> {{ post.Date.strftime('%Y-%m-%d') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Who to Follow -->
+        <div class="col-3">
+            <div class="card">
+                <div class="card-header pb-0 border-0"><h5>Search</h5></div>
+                <div class="card-body">
+                    <input placeholder="Search users..." class="form-control w-100" type="text" id="search">
+                    <button id="search-btn" class="btn btn-dark mt-2">Search</button>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header pb-0 border-0"><h5>Who to Follow</h5></div>
+                <div class="card-body">
+                    <!-- Example Suggestions -->
+                    <div class="hstack gap-2 mb-3">
+                        <div class="avatar">
+                            <a href="#"><img class="avatar-img rounded-circle" src="https://api.dicebear.com/6.x/fun-emoji/svg?seed=Mario" alt=""></a>
+                        </div>
+                        <div class="overflow-hidden">
+                            <a class="h6 mb-0" href="#">Mario Brother</a>
+                            <p class="mb-0 small text-truncate">@Mario</p>
+                        </div>
+                        <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"></i></a>
+                    </div>
+
+                    <div class="d-grid mt-3">
+                        <a class="btn btn-sm btn-primary-soft" href="#">Show More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% include 'parts/foot.html' %}
+</body>
+</html>

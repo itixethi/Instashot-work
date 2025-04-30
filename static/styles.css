@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styling */
+body {
+  background-color: #fafafa;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #262626;
+}
+
+.navbar-nav .nav-link {
+  color: #262626;
+  margin-left: 1rem;
+  font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #0095f6;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #0095f6;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #0077cc;
+}
+
+.btn-danger {
+  background-color: #ed4956;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #c9303e;
+}
+
+/* Cards */
+.card {
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  background-color: #ffffff;
+  margin-bottom: 2rem;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+/* Image grid for posts */
+.card-img-top {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-img-top:hover {
+  transform: scale(1.02);
+}
+
+/* Avatar */
+.avatar-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Forms */
+.form-control {
+  border-radius: 6px;
+  border: 1px solid #dbdbdb;
+}
+
+textarea.form-control {
+  resize: none;
+}
+
+/* Page Layout Helpers */
+.center-content {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-content {
+  padding-top: 100px;
+}
+
+/* Profile header align fix */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Footer */
+footer {
+  font-size: 0.875rem;
+  color: #8e8e8e;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* Typography */
+h1, h2, h3 {
+  font-weight: 600;
+  color: #262626;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Grid spacing fix */
+.row-cols-3 > .col,
+.row-cols-2 > .col {
+  padding: 0.3rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-nav {
+    margin-top: 1rem;
+  }
+
+  .card {
+    margin-bottom: 1.5rem;
+  }
+}
