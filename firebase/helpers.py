@@ -11,6 +11,8 @@ firestore_db = firestore.Client()
 def validateFirebaseToken(id_token, firebase_request_adapter):
     if not id_token:
         return None
+    
+    user_token = None
 
     try:
         user_token = google.oauth2.id_token.verify_firebase_token(id_token, firebase_request_adapter)
