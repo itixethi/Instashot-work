@@ -69,26 +69,33 @@
             <div class="card">
                 <div class="card-header pb-0 border-0"><h5>Search</h5></div>
                 <div class="card-body">
-                    <input placeholder="Search users..." class="form-control w-100" type="text" id="search">
-                    <button id="search-btn" class="btn btn-dark mt-2">Search</button>
+                    <form method="get" action="/search">
+                        <input placeholder="Search users..." class="form-control w-100" type="text" name="q" required>
+                        <button type="submit" class="btn btn-dark mt-2">Search</button>
+                    </form>
                 </div>
             </div>
 
             <div class="card mt-3">
                 <div class="card-header pb-0 border-0"><h5>Who to Follow</h5></div>
                 <div class="card-body">
-                    <!-- Example Suggestions -->
+                    {% for user in suggested_users %}
                     <div class="hstack gap-2 mb-3">
                         <div class="avatar">
-                            <a href="#"><img class="avatar-img rounded-circle" src="https://api.dicebear.com/6.x/fun-emoji/svg?seed=Mario" alt=""></a>
+                            <a href="/profile/{{ user.Username }}">
+                                <img class="avatar-img rounded-circle"
+                                     src="https://api.dicebear.com/6.x/fun-emoji/svg?seed={{ user.Username }}" alt="">
+                            </a>
                         </div>
                         <div class="overflow-hidden">
-                            <a class="h6 mb-0" href="#">Mario Brother</a>
-                            <p class="mb-0 small text-truncate">@Mario</p>
+                            <a class="h6 mb-0" href="/profile/{{ user.Username }}">{{ user.Username }}</a>
+                            <p class="mb-0 small text-truncate">@{{ user.Username }}</p>
                         </div>
-                        <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"></i></a>
+                        <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="/follow-user?profile_id={{ user.id }}">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
                     </div>
-
+                    {% endfor %}
                     <div class="d-grid mt-3">
                         <a class="btn btn-sm btn-primary-soft" href="#">Show More</a>
                     </div>
