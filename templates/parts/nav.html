@@ -19,13 +19,15 @@
                 {% endif %}
 
                 {% if isAuthorized %}
+                {% if user and user.Username %}
                 <li class="nav-item">
                     <a class="nav-link" href="/profile/{{ user.Username }}">Profile</a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="#" id="sign-out">Logout</a>
                 </li>
-                {% endif %}
+            {% endif %}
             </ul>
         </div>
     </div>

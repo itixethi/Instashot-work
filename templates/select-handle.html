@@ -1,0 +1,39 @@
+{% include 'parts/head.html' %}
+{% include 'parts/nav.html' %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-6 col-md-4">
+      <form class="form mt-5" method="post" action="/select-handle">
+        <h3 class="text-center text-dark">Select a Handle</h3>
+        <p class="text-muted small text-center">This will be your public username.</p>
+
+        <!-- Display error message from query param -->
+        {% if request.query_params.get("error") %}
+        <div class="alert alert-danger">
+          {{ request.query_params.get("error") }}
+        </div>
+        {% endif %}
+
+        <!-- Handle input -->
+        <div class="form-group mb-3">
+          <input
+            type="text"
+            name="handle"
+            id="handle"
+            placeholder="e.g. john_doe"
+            class="form-control"
+            required
+          >
+        </div>
+
+        <!-- Submit button -->
+        <div class="d-grid">
+          <button type="submit" class="btn btn-dark">Register New Handle</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% include 'parts/foot.html' %}
