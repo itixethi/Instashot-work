@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 {% include 'parts/head.html' %}
 {% include 'parts/nav.html' %}
 <body>
@@ -43,21 +41,50 @@
             <hr>
             {% endif %}
 
-            <!-- Instagram-Style Grid of Posts -->
-            <div class="row row-cols-2 row-cols-md-3 g-3">
+            <!-- Vertical Feed of Posts -->
+            <div class="timeline">
                 {% for post in posts %}
-                <div class="col">
-                    <div class="card border-0 shadow-sm">
-                        <a href="/profile/{{ post.Username }}">
-                            <img src="{{ post.ImageURL }}" class="card-img-top" alt="Post by {{ post.Username }}">
-                        </a>
-                        <div class="card-body p-2">
-                            <p class="mb-0 fw-semibold small">@{{ post.Username }}</p>
-                            <p class="text-muted small">{{ post.Caption }}</p>
-                            <p class="text-muted small mb-0">
-                                <i class="fas fa-clock"></i> {{ post.Date.strftime('%Y-%m-%d') }}
-                            </p>
+                <div class="card mb-4 shadow-sm">
+                    <a href="/profile/{{ post.Username }}">
+                        <img src="{{ post.ImageURL }}" class="card-img-top" alt="Post by {{ post.Username }}">
+                    </a>
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-1">@{{ post.Username }}</h6>
+                        <p class="mb-1">{{ post.Caption }}</p>
+                        <p class="text-muted small mb-2">
+                            <i class="fas fa-clock"></i> {{ post.Date.strftime('%Y-%m-%d') }}
+                        </p>
+
+                        <!-- Comment Form -->
+                        <form method="POST" action="/comment" class="mb-2">
+                            <input type="hidden" name="post_id" value="{{ post.id }}">
+                            <textarea class="form-control form-control-sm" name="comment" maxlength="200" rows="2" placeholder="Add a comment..." required></textarea>
+                            <div class="text-end mt-1">
+                                <button type="submit" class="btn btn-sm btn-primary">Post Comment</button>
+                            </div>
+                        </form>
+
+                        <!-- Comments Section -->
+                        {% if post.comments %}
+                        <div class="comments">
+                            {% for comment in post.comments[:5] %}
+                            <div class="border rounded p-2 mb-1">
+                                <strong>@{{ comment.username }}</strong>: {{ comment.text }}
+                            </div>
+                            {% endfor %}
+                            {% if post.comments|length > 5 %}
+                            <button class="btn btn-sm btn-link p-0" onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Show all comments</button>
+                            <div hidden>
+                                {% for comment in post.comments[5:] %}
+                                <div class="border rounded p-2 mb-1">
+                                    <strong>@{{ comment.username }}</strong>: {{ comment.text }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
                         </div>
+                        {% endif %}
+
                     </div>
                 </div>
                 {% endfor %}
@@ -69,8 +96,8 @@
             <div class="card">
                 <div class="card-header pb-0 border-0"><h5>Search</h5></div>
                 <div class="card-body">
-                    <form method="get" action="/search">
-                        <input placeholder="Search users..." class="form-control w-100" type="text" name="q" required>
+                    <form action="/search" method="get">
+                        <input name="q" placeholder="Search by handle..." class="form-control w-100" type="text">
                         <button type="submit" class="btn btn-dark mt-2">Search</button>
                     </form>
                 </div>
@@ -84,21 +111,21 @@
                         <div class="avatar">
                             <a href="/profile/{{ user.Username }}">
                                 <img class="avatar-img rounded-circle"
-                                     src="https://api.dicebear.com/6.x/fun-emoji/svg?seed={{ user.Username }}" alt="">
+                                     src="{{ user.ProfileImageURL if user.ProfileImageURL else 'https://api.dicebear.com/6.x/fun-emoji/svg?seed=' ~ user.Username }}"
+                                     alt="{{ user.Username }}">
                             </a>
                         </div>
                         <div class="overflow-hidden">
-                            <a class="h6 mb-0" href="/profile/{{ user.Username }}">{{ user.Username }}</a>
+                            <a class="h6 mb-0 text-dark" href="/profile/{{ user.Username }}">{{ user.Username }}</a>
                             <p class="mb-0 small text-truncate">@{{ user.Username }}</p>
                         </div>
-                        <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="/follow-user?profile_id={{ user.id }}">
-                            <i class="fa-solid fa-plus"></i>
-                        </a>
+                        {% if user.is_following %}
+                        <a class="btn btn-sm btn-outline-danger ms-auto" href="/unfollow-user?profile_id={{ user.id }}&username={{ user.Username }}">Unfollow</a>
+                        {% else %}
+                        <a class="btn btn-sm btn-outline-primary ms-auto" href="/follow-user?profile_id={{ user.id }}&username={{ user.Username }}">Follow</a>
+                        {% endif %}
                     </div>
                     {% endfor %}
-                    <div class="d-grid mt-3">
-                        <a class="btn btn-sm btn-primary-soft" href="#">Show More</a>
-                    </div>
                 </div>
             </div>
         </div>

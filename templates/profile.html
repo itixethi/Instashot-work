@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'parts/head.html' %}
+{% include 'parts/nav.html' %}
+<body>
+
+<div class="container py-4">
+    <div class="row">
+
+        <!-- Sidebar -->
+        <div class="col-3">
+            <div class="card overflow-hidden">
+                <div class="card-body pt-3">
+                    <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
+                        <li class="nav-item"><a class="nav-link text-dark" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Explore</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Feed</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Terms</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Support</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="col-6">
+            <div class="mt-3 mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="fw-semibold">@{{ user.Username }}</h2>
+                    {% if not is_own_profile %}
+                        {% if following %}
+                            <a href="/unfollow-user?profile_id={{ user.id }}&username={{ user.Username }}" class="btn btn-outline-danger btn-sm">Unfollow</a>
+                        {% else %}
+                            <a href="/follow-user?profile_id={{ user.id }}&username={{ user.Username }}" class="btn btn-outline-primary btn-sm">Follow</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <p class="text-muted">Welcome to {{ user.Username }}'s photo gallery.</p>
+                <p class="text-muted small mb-0">
+                    <a href="/profile/{{ user.Username }}/followers" class="text-decoration-none">Followers: {{ follower_count }}</a> |
+                    <a href="/profile/{{ user.Username }}/following" class="text-decoration-none">Following: {{ following_count }}</a>
+                </p>
+            </div>
+
+            <!-- Grid of User's Posts -->
+            <div class="row row-cols-2 row-cols-md-3 g-3">
+                {% for post in posts %}
+                <div class="col">
+                    <div class="card border-0 shadow-sm">
+                        <img src="{{ post.ImageURL }}" class="card-img-top" alt="Post image by {{ user.Username }}">
+                        <div class="card-body p-2">
+                            <p class="text-muted small mb-1">{{ post.Caption }}</p>
+                            <p class="text-muted small mb-0">
+                                <i class="fas fa-clock"></i> {{ post.Date.strftime('%Y-%m-%d') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Who to Follow -->
+        <div class="col-3">
+            <div class="card">
+                <div class="card-header pb-0 border-0">
+                    <h5>Search</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/search" method="get">
+                        <input name="q" placeholder="Search by handle..." class="form-control w-100" type="text">
+                        <button type="submit" class="btn btn-dark mt-2">Search</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header pb-0 border-0">
+                    <h5>Who to Follow</h5>
+                </div>
+                <div class="card-body">
+                    {% for user in suggested_users %}
+                    <div class="hstack gap-2 mb-3">
+                        <div class="avatar">
+                            <a href="/profile/{{ user.Username }}">
+                                <img class="avatar-img rounded-circle"
+                                     src="{{ user.ProfileImageURL if user.ProfileImageURL else 'https://api.dicebear.com/6.x/fun-emoji/svg?seed=' ~ user.Username }}"
+                                     alt="{{ user.Username }} profile">
+                            </a>
+                        </div>
+                        <div class="overflow-hidden">
+                            <a class="h6 mb-0 text-dark" href="/profile/{{ user.Username }}">{{ user.Username }}</a>
+                            <p class="mb-0 small text-truncate">@{{ user.Username }}</p>
+                        </div>
+                        {% if user.id != viewer_id %}
+                            {% if user.is_following %}
+                            <a class="btn btn-sm btn-outline-danger ms-auto" href="/unfollow-user?profile_id={{ user.id }}">Unfollow</a>
+                            {% else %}
+                            <a class="btn btn-sm btn-outline-primary ms-auto" href="/follow-user?profile_id={{ user.id }}">Follow</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% include 'parts/foot.html' %}
+</body>
+</html>
