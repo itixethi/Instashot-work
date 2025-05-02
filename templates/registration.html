@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'parts/head.html' %}
+{% include 'parts/nav.html' %}
+<body>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-8 col-md-6">
+      <div class="card shadow-sm p-4">
+        <h4 class="text-center text-dark mb-4">Create an Account</h4>
+
+        <!-- Registration Form (Firebase handles this via JS) -->
+        <form onsubmit="return false;">
+          <!-- Email -->
+          <div class="form-group mb-3">
+            <label for="email" class="form-label text-dark">Email</label>
+            <input type="email" name="email" id="email" class="form-control" required>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group mb-3">
+            <label for="password" class="form-label text-dark">Password</label>
+            <input type="password" name="password" id="password" class="form-control" required>
+          </div>
+
+          <!-- Submit -->
+          <div class="d-grid mt-3">
+            <button type="submit" class="btn btn-primary" id="sign-up">Register</button>
+          </div>
+
+          <!-- Link to login -->
+          <div class="text-center mt-3">
+            <a href="/login" class="text-dark small">Already have an account? Log in here</a>
+          </div>
+        </form>
+
+        <!-- Sign Out Button (hidden until user is logged in) -->
+        <div class="d-grid mt-4">
+          <button id="sign-out" class="btn btn-danger" hidden>Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'parts/foot.html' %}
+</body>
+</html>

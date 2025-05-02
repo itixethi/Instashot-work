@@ -1,0 +1,65 @@
+{% include 'parts/head.html' %}
+{% include 'parts/nav.html' %}
+
+<!-- Main container for search results -->
+<div class="container py-4">
+    <div class="row">
+        <!-- Main content column -->
+        <div class="col-9">
+            <h2>Search Results</h2>
+
+            {% if users %}
+            <div class="row row-cols-1 row-cols-md-2 g-3">
+                {% for user in users %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="me-3">
+                                <a href="/profile/{{ user.Username }}">
+                                    <img class="avatar-img rounded-circle"
+                                         src="{{ user.ProfileImageURL if user.ProfileImageURL else 'https://api.dicebear.com/6.x/fun-emoji/svg?seed=' ~ user.Username }}"
+                                         alt="{{ user.Username }} avatar"
+                                         style="width: 48px; height: 48px;">
+                                </a>
+                            </div>
+                            <div>
+                                <h5 class="mb-0">@{{ user.Username }}</h5>
+                                <a href="/profile/{{ user.Username }}" class="btn btn-sm btn-outline-primary mt-1">View Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>No users found matching your query.</p>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar for new search and suggestions -->
+        <div class="col-3">
+            <div class="card">
+                <div class="card-header pb-0 border-0">
+                    <h5>Search Again</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/search" method="get">
+                        <input name="q" placeholder="Search by handle..." class="form-control w-100" type="text">
+                        <button type="submit" class="btn btn-dark mt-2">Search</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header pb-0 border-0">
+                    <h5>Suggestions</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted small">User suggestions coming soon.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'parts/foot.html' %}
