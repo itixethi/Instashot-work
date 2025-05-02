@@ -96,3 +96,39 @@ async def upload_profile_image(request: Request, file: UploadFile):
     
     except Exception as e:
         return HTMLResponse(str(e), status_code=500)
+    
+async def add_comment(request: Request):
+    try:
+        form = await request.form()
+        post_id = form.get("post_id")
+        comment_text = form.get("comment")
+
+        if not post_id or not comment_text:
+            return HTMLResponse("Missing post ID or comment", status_code=400)
+
+        id_token_cookie = request.cookies.get("token")
+        user_token = validateFirebaseToken(id_token=id_token_cookie, firebase_request_adapter=firebase_request_adapter)
+        if not user_token:
+            return RedirectResponse(url="/login", status_code=302)
+        
+        user_id = user_token["user_id"]
+
+        # Fetch the correct handle from Firestore
+        user_doc = firestore_db.collection("User").document(user_id).get()
+        username = "Anonymous"
+        if user_doc.exists:
+            user_data = user_doc.to_dict()
+            username = user_data.get("Username", "Anonymous")
+
+        comment_data = {
+            "username": username,
+            "text": comment_text,
+            "timestamp": datetime.datetime.utcnow()
+        }
+
+        post_ref = firestore_db.collection("Post").document(post_id)
+        post_ref.collection("Comments").add(comment_data)
+
+        return RedirectResponse(url="/", status_code=303)
+    except Exception as e:
+        return HTMLResponse(f"Error: {str(e)}", status_code=500)
